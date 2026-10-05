@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ad Astra 101, Unit 1: Higher Ed 101</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0EB; --surface:#FFFFFF; --surface-2:#F6F8F4;
+  --ink:#16223A; --ink-2:#4B5566; --line:#CAD2CB;
+  --accent:#2C6B5A; --accent-soft:#DCEBE4; --on-accent:#FFFFFF;
+  --mari:#C98516; --mari-soft:#F8EBCF;
+  --bad:#B0412B; --bad-soft:#F7E0D9;
+  --placeholder:#8A5A00;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Public Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111823; --surface:#18212F; --surface-2:#1E2838;
+    --ink:#E7EBF1; --ink-2:#A9B3C2; --line:#2F3B4D;
+    --accent:#6DBEA5; --accent-soft:#1F3A35; --on-accent:#0E1620;
+    --mari:#F0B952; --mari-soft:#3A3020;
+    --bad:#F08A72; --bad-soft:#3E2621;
+    --placeholder:#F0B952;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111823; --surface:#18212F; --surface-2:#1E2838;
+  --ink:#E7EBF1; --ink-2:#A9B3C2; --line:#2F3B4D;
+  --accent:#6DBEA5; --accent-soft:#1F3A35; --on-accent:#0E1620;
+  --mari:#F0B952; --mari-soft:#3A3020;
+  --bad:#F08A72; --bad-soft:#3E2621;
+  --placeholder:#F0B952;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--mari);outline-offset:2px;border-radius:4px}
+
+/* ---------- Layout ---------- */
+.shell{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+.rail{position:sticky;top:0;align-self:start;height:100vh;padding:28px 22px;border-right:1px solid var(--line);background:var(--surface-2);overflow-y:auto}
+.rail .course{font-size:14px;color:var(--ink-2);margin:0 0 4px}
+.rail .unit{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.2;margin:0 0 20px}
+.zoom{display:block;margin:0 auto 6px;width:100%;max-width:210px}
+.zoom-caption{text-align:center;font-size:14px;color:var(--ink-2);margin:0 0 22px;min-height:1.6em}
+.zoom circle{fill:none;stroke:var(--line);stroke-width:1.5;transition:stroke .3s, stroke-width .3s, fill .3s}
+.zoom text{font-family:var(--sans);font-size:9.5px;fill:var(--ink-2);text-anchor:middle;transition:fill .3s}
+.zoom .lvl.on circle{stroke:var(--mari);stroke-width:4;fill:var(--mari-soft)}
+.zoom .lvl.on text{fill:var(--ink);font-weight:700}
+.zoom .lvl.seen circle{stroke:var(--mari);stroke-width:1.5}
+.nav{list-style:none;margin:0;padding:0}
+.nav button{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:baseline;width:100%;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:15px;color:var(--ink-2)}
+.nav button:hover{background:var(--surface)}
+.nav button:focus-visible{outline:3px solid var(--mari)}
+.nav button[aria-current="step"]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:inset 3px 0 0 var(--accent)}
+.nav .tick{flex:0 0 14px;color:var(--accent);font-size:13px}
+.progress{margin-top:22px;font-size:14px;color:var(--ink-2)}
+.bar{height:6px;background:var(--line);border-radius:3px;margin-top:6px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+
+main{padding:48px 40px 80px;min-width:0}
+.page{max-width:720px;margin:0 auto}
+section[data-step]{display:none}
+section[data-step].active{display:block}
+.meta{font-size:14px;color:var(--ink-2);margin:0 0 6px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;color:var(--ink)}
+h1{font-size:44px;margin:0 0 18px;letter-spacing:-.01em}
+h2{font-size:32px;margin:0 0 14px;letter-spacing:-.005em}
+h3{font-size:23px;margin:40px 0 10px}
+h4{font-size:17px;margin:20px 0 6px}
+p{margin:0 0 14px}
+.lede{font-size:20px;line-height:1.55;color:var(--ink-2)}
+.why{border-left:4px solid var(--mari);background:var(--mari-soft);padding:14px 18px;border-radius:0 10px 10px 0;margin:28px 0}
+.why strong{display:block;margin-bottom:4px}
+.bridge{font-family:var(--serif);font-size:21px;line-height:1.45;font-style:italic;color:var(--ink);margin:0 0 22px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:20px 0}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--ink-2);font-size:14px}
+
+/* ---------- Objectives ---------- */
+.objectives{counter-reset:lo;list-style:none;padding:0;margin:0}
+.objectives li{counter-increment:lo;position:relative;padding:10px 0 10px 44px;border-bottom:1px solid var(--line)}
+.objectives li:last-child{border-bottom:0}
+.objectives li::before{content:counter(lo);position:absolute;left:0;top:10px;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:14px;display:grid;place-items:center}
+
+/* ---------- Arc ---------- */
+.arc{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:24px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.arc div{padding:14px 14px 16px;border-right:1px solid var(--line)}
+.arc div:last-child{border-right:0}
+.arc b{display:block;font-family:var(--serif);font-size:20px}
+.arc small{color:var(--ink-2);font-size:14px;line-height:1.4;display:block}
+
+/* ---------- Pathway thread ---------- */
+.maya{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:22px 0}
+.maya .badge{flex:0 0 44px;height:44px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--serif);font-size:22px;font-weight:600}
+.maya p{margin:0}
+.steps{list-style:none;margin:28px 0;padding:0;position:relative}
+.steps>li{position:relative;padding:0 0 30px 46px}
+.steps>li::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
+.steps>li:last-child::before{display:none}
+.steps .n{position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);background:var(--bg);display:grid;place-items:center;font-weight:700;font-size:14px}
+.steps h3{margin:2px 0 8px;font-size:22px}
+.term{font-weight:700;color:var(--ink);background:linear-gradient(transparent 62%, var(--mari-soft) 62%)}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:12px 0}
+.terms div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px;line-height:1.5}
+.terms b{display:block;font-size:15px}
+.term-row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{font-size:14px;padding:4px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.chip.ge{border-color:var(--mari)}
+.chip.maj{border-color:var(--accent)}
+.legend{font-size:14px;color:var(--ink-2)}
+.legend span{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;border:2px solid}
+
+.sections td.full{color:var(--bad);font-weight:600}
+.sections td.open{color:var(--accent);font-weight:600}
+
+/* ---------- Org chart ---------- */
+.org{font-size:15px}
+.org ul{list-style:none;margin:0;padding-left:22px;border-left:2px solid var(--line)}
+.org>ul{padding-left:0;border-left:0}
+.org li{position:relative;margin:6px 0}
+.org ul ul>li::before{content:"";position:absolute;left:-22px;top:15px;width:16px;height:2px;background:var(--line)}
+.org .node{display:inline-block;padding:4px 12px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line)}
+.org .node.hl{border-color:var(--accent);background:var(--accent-soft)}
+
+details.office{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:8px 0}
+details.office summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.office summary::-webkit-details-marker{display:none}
+details.office summary::after{content:"+";color:var(--accent);font-size:20px;line-height:1}
+details.office[open] summary::after{content:"\2212"}
+details.office .body{padding:0 16px 14px;font-size:15.5px}
+details.office .body p{margin:0 0 8px}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 0}
+.tabs button{font:inherit;font-size:15px;font-weight:600;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tabpanel{display:none}
+.tabpanel.on{display:block}
+.model-diagram{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 4px;font-size:14px}
+.model-diagram .box{padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2)}
+.model-diagram .box.key{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+
+.raci td,.raci th{text-align:center}
+.raci td:first-child,.raci th:first-child{text-align:left;min-width:180px}
+.raci td.R{color:var(--accent);font-weight:700}
+.raci td.A{color:var(--mari);font-weight:700}
+.raci td.C,.raci td.I{color:var(--ink-2)}
+
+.blockers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:14px 0}
+.blocker{font:inherit;text-align:left;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-height:64px}
+.blocker b{display:block;font-size:15px}
+.blocker .reveal{display:none;font-size:14.5px;color:var(--ink-2);margin-top:6px;line-height:1.45}
+.blocker[aria-expanded="true"]{border-color:var(--mari);background:var(--mari-soft)}
+.blocker[aria-expanded="true"] .reveal{display:block;color:var(--ink)}
+.blocker .hint{font-size:13px;color:var(--ink-2)}
+.blocker[aria-expanded="true"] .hint{display:none}
+
+/* ---------- System diagram ---------- */
+.system{display:grid;gap:10px;margin:14px 0;text-align:center;font-size:14.5px}
+.system .top{padding:12px;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:600}
+.system .row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.system .row div{padding:12px 8px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.system .row div.you{border:2px solid var(--mari);background:var(--mari-soft)}
+.system .rules{font-size:14px;color:var(--ink-2)}
+
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:14px 0}
+.types div{padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:15px;line-height:1.5}
+.types b{display:block;font-family:var(--serif);font-size:18px;margin-bottom:4px}
+.funding{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.funding div{padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:15px}
+.funding b{display:block;font-family:var(--serif);font-size:19px;margin-bottom:4px}
+.funding .fq{margin-top:8px;color:var(--ink-2);font-style:italic}
+
+/* ---------- Stats placeholder ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.stat{padding:16px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.stat .num{font-family:var(--serif);font-size:38px;font-weight:600;line-height:1;color:var(--accent)}
+.stat .lbl{font-size:14px;margin-top:8px}
+.todo{color:var(--placeholder);border:1px dashed var(--placeholder);border-radius:8px;padding:6px 8px;display:block;font-size:13.5px;line-height:1.4}
+
+/* ---------- Questions ---------- */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0}
+.q .qnum{font-size:14px;color:var(--ink-2);margin:0 0 4px}
+.q .prompt{font-weight:600;margin:0 0 12px}
+.q fieldset{border:0;padding:0;margin:0}
+.q legend{padding:0}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:10px;margin:6px 0;cursor:pointer;background:var(--surface-2)}
+.opt input{margin-top:5px;accent-color:var(--accent)}
+.opt.right{border-color:var(--accent);background:var(--accent-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.match-row{display:grid;grid-template-columns:1fr 200px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:15.5px}
+.match-row:last-of-type{border-bottom:0}
+.match-row select{font:inherit;font-size:15px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);width:100%}
+.match-row.right select{border-color:var(--accent);background:var(--accent-soft)}
+.match-row.wrong select{border-color:var(--bad);background:var(--bad-soft)}
+textarea{width:100%;min-height:110px;font:inherit;font-size:16px;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);resize:vertical}
+.btn{font:inherit;font-size:15px;font-weight:600;padding:10px 18px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.q .actions{margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.fb{display:none;margin-top:12px;padding:12px 14px;border-radius:10px;font-size:15.5px}
+.fb.show{display:block}
+.fb.good{background:var(--accent-soft)}
+.fb.bad{background:var(--bad-soft)}
+.fb.sample{background:var(--mari-soft)}
+.fb strong{display:block;margin-bottom:2px}
+.note{font-size:14px;color:var(--ink-2)}
+.saved{font-size:13px;color:var(--ink-2)}
+
+.scorecard{display:none;padding:20px 22px;border-radius:14px;background:var(--accent-soft);margin:22px 0}
+.scorecard.show{display:block}
+.scorecard .big{font-family:var(--serif);font-size:34px;font-weight:600}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:48px;padding-top:22px;border-top:1px solid var(--line)}
+.pager .btn{min-width:150px}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 920px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:sticky;top:0;height:auto;z-index:5;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line);padding-top:calc(10px + env(safe-area-inset-top,0px))}
+  .rail .course,.zoom,.zoom-caption,.rail .unit{display:none}
+  .nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{white-space:nowrap;padding:6px 10px;font-size:14px}
+  .nav button[aria-current="step"]{box-shadow:inset 0 -3px 0 var(--accent)}
+  .nav .tick{display:none}
+  .progress{margin-top:8px;font-size:13px}
+  main{padding:28px 18px 60px}
+  h1{font-size:34px}
+  h2{font-size:27px}
+  .arc{grid-template-columns:repeat(2,1fr)}
+  .arc div:nth-child(2){border-right:0}
+  .arc div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .funding{grid-template-columns:1fr}
+  .match-row{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="rail" aria-label="Unit navigation">
+  <p class="course">Ad Astra 101 baseline certification</p>
+  <p class="unit">Unit 1: Higher Ed 101</p>
+
+  <svg class="zoom" viewBox="0 0 200 200" role="img" aria-label="Zoom level indicator: student, campus, system, industry">
+    <g class="lvl" data-lvl="industry"><circle cx="100" cy="100" r="94"/><text x="100" y="20">Industry</text></g>
+    <g class="lvl" data-lvl="system"><circle cx="100" cy="100" r="71"/><text x="100" y="43">System</text></g>
+    <g class="lvl" data-lvl="campus"><circle cx="100" cy="100" r="48"/><text x="100" y="66">Campus</text></g>
+    <g class="lvl" data-lvl="student"><circle cx="100" cy="100" r="25"/><text x="100" y="104">Student</text></g>
+  </svg>
+  <p class="zoom-caption" id="zoomCaption"></p>
+
+  <ol class="nav" id="nav"></ol>
+
+  <div class="progress" aria-live="polite">
+    <span id="progressText">0 of 8 sections visited</span>
+    <div class="bar"><span id="progressBar"></span></div>
+  </div>
+</aside>
+
+<main>
+<div class="page">
+
+<!-- ================= WELCOME ================= -->
+<section data-step="welcome" data-title="Welcome" data-zoom="all">
+  <p class="meta">Unit 1 · About 60 minutes</p>
+  <h1>Higher Ed 101</h1>
+  <p class="lede">You've been a college student, so you already know what registration and a syllabus look like from the outside. This unit shows you what's underneath: how a college actually runs, who has authority over what, and why the decisions Ad Astra touches, like scheduling, capacity, and program mix, matter so much to the institutions we serve.</p>
+
+  <h3>How this unit is built</h3>
+  <p>We start with one student and zoom out, one level at a time, until we're looking at higher education as a whole. The rings in the sidebar show where you are.</p>
+  <div class="arc">
+    <div><b>Student</b><small>Your registration experience and one student's path to a degree</small></div>
+    <div><b>Campus</b><small>Who runs a single institution and who owns the schedule</small></div>
+    <div><b>System</b><small>How a campus fits into a larger system and how it's funded</small></div>
+    <div><b>Industry</b><small>The enrollment and completion pressures facing higher ed</small></div>
+  </div>
+
+  <h3>By the end of this unit, you'll be able to</h3>
+  <ol class="objectives">
+    <li>Identify which departments, such as Academic Affairs, Student Affairs, Enrollment Management, the Registrar, the Scheduling Office, Finance, and IT, are typically involved in a scheduling decision.</li>
+    <li>Explain how scheduling authority can be centralized, decentralized, or hybrid.</li>
+    <li>Use core higher ed terms correctly, including program of study, pathway, retention, completion, degree velocity, FTE, and seat and section capacity, when describing a scheduling situation.</li>
+    <li>Distinguish common institution types and explain how belonging to a system or district affects who controls scheduling.</li>
+    <li>Explain how an institution's funding model shapes its priorities around enrollment and completion.</li>
+    <li>Describe the enrollment and completion pressures facing higher education today and why they matter.</li>
+  </ol>
+  <p class="note" style="margin-top:18px">Your notes and answers are saved in this browser as you go, so you can leave and come back.</p>
+</section>
+
+<!-- ================= OPENING ================= -->
+<section data-step="opening" data-title="Opening" data-zoom="student">
+  <p class="meta">Opening activity · About 10 minutes</p>
+  <h2>Your registration experience</h2>
+  <p class="lede">Before we get into any terminology, think about what registration was actually like for you.</p>
+  <p>If you're working through this with a group, talk these through with a partner first. On your own, jot a few notes below. You'll come back to them at the end of the unit.</p>
+
+  <div class="q">
+    <p class="prompt">Walk through the last time you registered for a class. Was it smooth, or was there a snag?</p>
+    <textarea data-save="open1" aria-label="Your answer: last time you registered"></textarea>
+  </div>
+  <div class="q">
+    <p class="prompt">What went wrong, if anything? Maybe you couldn't get into a required class, ran into a schedule conflict, or ended up on a waitlist.</p>
+    <textarea data-save="open2" aria-label="Your answer: what went wrong"></textarea>
+  </div>
+  <div class="q">
+    <p class="prompt">No experience of your own to draw on? Think of a family member or friend. What did they run into?</p>
+    <textarea data-save="open3" aria-label="Your answer: a friend or family member's experience"></textarea>
+  </div>
+
+  <div class="why">
+    <strong>Hold on to those snags</strong>
+    Every one of them has a real explanation behind it: who controls the seat, why it's capped, and why the institution cares. That's what the rest of this unit unpacks.
+  </div>
+</section>
+
+<!-- ================= BLOCK A ================= -->
+<section data-step="a" data-title="Block A" data-zoom="student">
+  <p class="meta">Block A · About 10 minutes</p>
+  <h2>Curriculum concepts and core vocabulary</h2>
+  <p class="lede">Instead of a list of definitions, we'll follow one student through her degree. Each term builds on the one before it.</p>
+
+  <div class="maya">
+    <div class="badge" aria-hidden="true">M</div>
+    <p><strong>Meet Maya.</strong> She's a first-year, full-time Business major who works afternoons at a local bank. She wants to graduate in four years.</p>
+  </div>
+
+  <ol class="steps">
+    <li>
+      <span class="n">1</span>
+      <h3>Program of study</h3>
+      <p>Maya's <span class="term">program of study</span> is the complete set of requirements she has to finish to earn her degree. For a bachelor's degree, that's usually around 120 credit hours, made up of a few parts:</p>
+      <div class="terms">
+        <div><b>Major</b>The core courses in her field, like accounting, marketing, and management.</div>
+        <div><b>Concentration</b>A focus within the major. Maya picks Marketing.</div>
+        <div><b>General education</b>Courses every student takes across disciplines, like English composition, math, and science.</div>
+        <div><b>Electives</b>Courses she chooses freely to fill out the credits she needs.</div>
+      </div>
+    </li>
+    <li>
+      <span class="n">2</span>
+      <h3>Pathway</h3>
+      <p>A <span class="term">pathway</span> (also called a program map or degree map) lays those requirements out term by term in the order a student should take them to finish on time. Order matters because of <strong>prerequisites</strong>: Maya can't take Accounting II until she passes Accounting I.</p>
+      <div class="panel">
+        <p style="margin:0 0 6px;font-weight:600">Maya's first fall semester</p>
+        <div class="term-row">
+          <span class="chip ge">English Composition I (3)</span>
+          <span class="chip ge">College Algebra (3)</span>
+          <span class="chip maj">Intro to Business (3)</span>
+          <span class="chip maj">Principles of Accounting I (3)</span>
+          <span class="chip ge">Intro to Psychology (3)</span>
+        </div>
+        <p class="legend" style="margin:0"><span style="border-color:var(--accent)"></span>Major<span style="border-color:var(--mari)"></span>General education</p>
+      </div>
+    </li>
+    <li>
+      <span class="n">3</span>
+      <h3>Credit hours</h3>
+      <p>Each course is worth a number of <span class="term">credit hours</span>, the unit colleges use to measure academic progress. Most of Maya's courses are worth 3.</p>
+      <p>Taking 12 or more credit hours a term usually makes a student <strong>full-time</strong>. But 12 credits a term only gets Maya to 96 credits in four years. To reach 120 on time, she needs about 15 a term. That's what "on pace" means.</p>
+      <div class="panel">
+        <p style="margin:0 0 8px;font-weight:600">Don't mix up credit hours and contact hours</p>
+        <p style="margin:0 0 10px"><span class="term">Contact hours</span> measure time actually spent in instruction, like class or lab time. Credit hours measure academic credit earned. They often match, but not always.</p>
+        <div class="scroll">
+        <table>
+          <thead><tr><th>Course</th><th>Credit hours</th><th>Contact hours per week (typical)</th></tr></thead>
+          <tbody>
+            <tr><td>Principles of Marketing (lecture)</td><td>3</td><td>About 3</td></tr>
+            <tr><td>Biology with lab</td><td>4</td><td>About 6 (3 lecture + 3 lab)</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="note" style="margin:8px 0 0">The lab course uses far more instructor and room time than its credits suggest, which matters when an institution plans faculty loads and space.</p>
+      </div>
+    </li>
+    <li>
+      <span class="n">4</span>
+      <h3>Courses, sections, and capacity</h3>
+      <p>In her second year, Maya's pathway calls for Principles of Marketing. That's a <span class="term">course</span>: a subject listed in the catalog, BUS 210. What she actually registers for is a <span class="term">section</span>: a specific offering of that course with its own days, time, room, instructor, and seat limit.</p>
+      <div class="panel scroll">
+        <table class="sections">
+          <thead><tr><th>Section</th><th>Meets</th><th>Room</th><th>Enrolled / cap</th></tr></thead>
+          <tbody>
+            <tr><td>BUS 210-01</td><td>Mon/Wed/Fri 9:00 a.m.</td><td>Hall 104</td><td class="full">30 / 30 full</td></tr>
+            <tr><td>BUS 210-02</td><td>Tue/Thu 11:00 a.m.</td><td>Hall 212 (48 chairs)</td><td class="full">35 / 35 full</td></tr>
+            <tr><td>BUS 210-03</td><td>Tue/Thu 2:00 p.m.</td><td>Hall 118</td><td class="open">31 / 35 open</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="terms">
+        <div><b>Enrollment</b>How many students are registered in a section.</div>
+        <div><b>Seat capacity</b>The enrollment cap set for a section. Section 02 is capped at 35.</div>
+        <div><b>Room capacity</b>How many people the physical room holds. Hall 212 has 48 chairs.</div>
+      </div>
+      <p>Notice two things. Section 02 shows as full even though its room has 13 empty chairs, because the seat cap, not the room, is the limit. And section 03 has open seats, but it meets while Maya is at work. Seats existing isn't the same as seats a student can actually use.</p>
+    </li>
+    <li>
+      <span class="n">5</span>
+      <h3>Retention, completion, and degree velocity</h3>
+      <p>Maya can't fit BUS 210 this term, and a later course requires it as a prerequisite. She drops to 12 credits. If that keeps happening, her 120 credits take five years instead of four.</p>
+      <div class="terms">
+        <div><b>Degree velocity</b>How quickly a student moves toward finishing. Maya's has slowed.</div>
+        <div><b>Retention</b>Whether a student keeps enrolling from one term or year to the next. Every delay raises the risk Maya stops out.</div>
+        <div><b>Completion</b>Whether a student earns the credential they started. It's the outcome everything else feeds.</div>
+      </div>
+      <p>That's the whole chain: one full section affects her pace, her pace affects whether she stays, and whether she stays decides whether she finishes.</p>
+    </li>
+  </ol>
+
+  <div class="q" data-type="single" data-key="ciA">
+    <p class="qnum">Quick check</p>
+    <fieldset>
+      <legend class="prompt">BUS 210-02 shows 35 of 35 students enrolled and meets in a room with 48 chairs. What's keeping Maya out?</legend>
+      <label class="opt"><input type="radio" name="ciA" value="a"> Room capacity</label>
+      <label class="opt"><input type="radio" name="ciA" value="b" data-correct> Seat capacity</label>
+      <label class="opt"><input type="radio" name="ciA" value="c"> Contact hours</label>
+      <label class="opt"><input type="radio" name="ciA" value="d"> Retention</label>
+    </fieldset>
+    <div class="actions"><button class="btn" data-check>Check answer</button></div>
+    <div class="fb good"><strong>That's it.</strong>The section is capped at 35 seats. The room could physically hold more, but the cap is what the registration system enforces.</div>
+    <div class="fb bad"><strong>Not quite.</strong>The room has 13 empty chairs, so the room isn't the limit. The section's seat capacity, its enrollment cap of 35, is.</div>
+  </div>
+
+  <div class="why">
+    <strong>Why this matters in your job</strong>
+    You can now describe a registration snag in institutional terms. Not just "the class was full," but "every section of a pathway course hit its seat cap, which slows degree velocity." That's the language you'll hear in client conversations.
+  </div>
+</section>
+
+<!-- ================= BLOCK B ================= -->
+<section data-step="b" data-title="Block B" data-zoom="campus">
+  <p class="meta">Block B · About 15 minutes</p>
+  <h2>Institutional structure and roles</h2>
+  <p class="bridge">We just saw how seat and section availability shapes Maya's path. So who actually decides how many seats and sections exist in the first place?</p>
+
+  <h3>The academic hierarchy</h3>
+  <p>Most colleges have two sides: an academic side that owns curriculum and teaching, and administrative divisions that support students and run operations. Titles vary, but the shape is usually similar.</p>
+  <div class="panel org" aria-label="Typical institutional hierarchy">
+    <ul>
+      <li><span class="node">Board of trustees or regents</span>
+        <ul>
+          <li><span class="node">President or chancellor</span>
+            <ul>
+              <li><span class="node hl">Provost or VP of Academic Affairs</span>
+                <ul>
+                  <li><span class="node">Deans of colleges or schools</span>
+                    <ul><li><span class="node">Department chairs</span>
+                      <ul><li><span class="node">Faculty</span></li></ul>
+                    </li></ul>
+                  </li>
+                </ul>
+              </li>
+              <li><span class="node">VP of Student Affairs</span></li>
+              <li><span class="node">VP of Enrollment Management</span></li>
+              <li><span class="node">VP of Finance or CFO</span></li>
+              <li><span class="node">Chief Information Officer (IT)</span></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p class="note" style="margin:12px 0 0">The Registrar and Scheduling Office usually report to Academic Affairs or Enrollment Management, depending on the institution.</p>
+  </div>
+
+  <h3>Who touches the schedule</h3>
+  <p>Open each office to see its typical role. These vary from campus to campus, but you'll hear all of them in client conversations.</p>
+
+  <details class="office"><summary>Academic Affairs</summary><div class="body">
+    <p>The provost, deans, and department chairs decide what courses are offered, how many sections, and which faculty teach them. They own the curriculum, including program requirements and pathways.</p>
+  </div></details>
+  <details class="office"><summary>Student Affairs</summary><div class="body">
+    <p>Supports students outside the classroom. Depending on the institution, this can include advising, disability services, and student success programs. They often see firsthand when students can't get the courses they need.</p>
+  </div></details>
+  <details class="office"><summary>Enrollment Management</summary><div class="body">
+    <p>Responsible for bringing in and keeping students, often including admissions, financial aid, and sometimes the Registrar. They forecast how many students are coming and what those students will need.</p>
+  </div></details>
+  <details class="office"><summary>Registrar</summary><div class="body">
+    <p>Keeper of the official academic record and the course catalog. Runs registration, enforces academic policies like prerequisites and holds, and often builds or publishes the schedule.</p>
+  </div></details>
+  <details class="office"><summary>Scheduling Office</summary><div class="body">
+    <p>Assigns sections to times and rooms and manages how classroom space is used. Sometimes this is its own office; often it sits inside the Registrar's office.</p>
+  </div></details>
+  <details class="office"><summary>Finance</summary><div class="body">
+    <p>Funds the faculty positions, adjunct budgets, and facilities that make sections possible. Finance doesn't see "a student" the way Maya's story did. It sees FTE.</p>
+    <p><strong>FTE (full-time equivalent)</strong> converts total credit hours into an equivalent number of full-time students. Remember how a full-time student takes on a certain number of credit hours? Finance has to count that across every student, full-time and part-time.</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Student</th><th>Credit hours</th></tr></thead>
+      <tbody>
+        <tr><td>Maya</td><td>15</td></tr>
+        <tr><td>Jordan (part-time)</td><td>6</td></tr>
+        <tr><td>Sam (part-time)</td><td>9</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>30</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:10px">If 15 credit hours counts as 1 FTE, then 30 credits ÷ 15 = <strong>2 FTE</strong>. Three students, but two FTE. The exact formula varies by state and institution, but the idea is the same: funding, staffing, and budgets are often calculated on FTE, not headcount.</p>
+  </div></details>
+  <details class="office"><summary>IT</summary><div class="body">
+    <p>Runs the student information system (SIS), like Banner, PeopleSoft, Colleague, or Workday Student, where the schedule, registration rules, and student records actually live, along with the tools connected to it.</p>
+  </div></details>
+
+  <h3>Who owns scheduling?</h3>
+  <p>There's no single answer. Institutions tend to follow one of three models.</p>
+  <div class="tabs" role="tablist" aria-label="Scheduling models">
+    <button role="tab" aria-selected="true" aria-controls="m-central" id="t-central">Centralized</button>
+    <button role="tab" aria-selected="false" aria-controls="m-decentral" id="t-decentral">Decentralized</button>
+    <button role="tab" aria-selected="false" aria-controls="m-hybrid" id="t-hybrid">Hybrid</button>
+  </div>
+  <div class="panel tabpanel on" role="tabpanel" id="m-central" aria-labelledby="t-central">
+    <p>One central office, often in the Registrar's area, builds the schedule and assigns rooms for the whole institution. Departments submit requests; the central office makes the final call.</p>
+    <div class="model-diagram"><span class="box">Departments</span><span>submit requests to</span><span class="box key">Central office</span><span>which builds the full schedule</span></div>
+  </div>
+  <div class="panel tabpanel" role="tabpanel" id="m-decentral" aria-labelledby="t-decentral" hidden>
+    <p>Each department or college builds its own schedule and often controls its own rooms. The Registrar mostly collects and publishes what departments decide.</p>
+    <div class="model-diagram"><span class="box key">Each department</span><span>builds its own schedule and books its own rooms</span></div>
+  </div>
+  <div class="panel tabpanel" role="tabpanel" id="m-hybrid" aria-labelledby="t-hybrid" hidden>
+    <p>Responsibility is split. A common version: departments decide what to offer and who teaches it, while a central office assigns times and rooms or approves the schedule against shared rules. Many institutions land somewhere in here.</p>
+    <div class="model-diagram"><span class="box key">Departments</span><span>decide courses and sections;</span><span class="box key">Central office</span><span>assigns times and rooms</span></div>
+  </div>
+
+  <h3>One decision, many hands</h3>
+  <p>A RACI chart shows who's <strong>R</strong>esponsible for doing the work, who's <strong>A</strong>ccountable for the final call, who's <strong>C</strong>onsulted, and who's <strong>I</strong>nformed. Here's one hypothetical hybrid institution adding a new section of BUS 210.</p>
+  <div class="panel scroll">
+    <table class="raci">
+      <thead><tr><th>Step</th><th>Academic Affairs</th><th>Enroll. Mgmt</th><th>Registrar</th><th>Scheduling</th><th>Finance</th><th>IT</th><th>Student Affairs</th></tr></thead>
+      <tbody>
+        <tr><td>Decide to add the section</td><td class="A">A</td><td class="C">C</td><td class="I">I</td><td class="I">I</td><td class="C">C</td><td></td><td class="C">C</td></tr>
+        <tr><td>Fund an instructor</td><td class="R">R</td><td></td><td></td><td></td><td class="A">A</td><td></td><td></td></tr>
+        <tr><td>Assign a time and room</td><td class="C">C</td><td></td><td class="I">I</td><td class="A">A</td><td></td><td></td><td></td></tr>
+        <tr><td>Build it in the SIS and open registration</td><td></td><td class="I">I</td><td class="A">A</td><td class="C">C</td><td></td><td class="R">R</td><td class="I">I</td></tr>
+        <tr><td>Let affected students know</td><td class="C">C</td><td></td><td class="C">C</td><td></td><td></td><td></td><td class="A">A</td></tr>
+      </tbody>
+    </table>
+    <p class="note" style="margin:10px 0 0">The letters move around at every institution. The takeaway is how many offices one "simple" section touches.</p>
+  </div>
+
+  <h3>Where could Maya get blocked?</h3>
+  <p>Remember: every section of BUS 210 that fits Maya's schedule is full. Select each office to see how it could be part of the reason.</p>
+  <div class="blockers">
+    <button class="blocker" aria-expanded="false"><b>Academic Affairs</b><span class="hint">Select to reveal</span><span class="reveal">The department decided three sections would be enough, based on last year's numbers.</span></button>
+    <button class="blocker" aria-expanded="false"><b>Finance</b><span class="hint">Select to reveal</span><span class="reveal">There's no budget for another adjunct to teach a fourth section.</span></button>
+    <button class="blocker" aria-expanded="false"><b>Scheduling Office</b><span class="hint">Select to reveal</span><span class="reveal">No room large enough is free during the morning hours Maya can attend.</span></button>
+    <button class="blocker" aria-expanded="false"><b>Enrollment Management</b><span class="hint">Select to reveal</span><span class="reveal">A larger-than-expected incoming class wasn't factored into the section count.</span></button>
+    <button class="blocker" aria-expanded="false"><b>Registrar</b><span class="hint">Select to reveal</span><span class="reveal">Registration opens by class standing, so upper-level students filled the morning sections first.</span></button>
+    <button class="blocker" aria-expanded="false"><b>IT</b><span class="hint">Select to reveal</span><span class="reveal">A prerequisite rule in the SIS is coded wrong, so some eligible students are blocked from registering.</span></button>
+    <button class="blocker" aria-expanded="false"><b>Student Affairs</b><span class="hint">Select to reveal</span><span class="reveal">Her advisor didn't flag that BUS 210 was a bottleneck she needed to register for early.</span></button>
+  </div>
+
+  <div class="q" data-type="single" data-key="ciB">
+    <p class="qnum">Quick check</p>
+    <fieldset>
+      <legend class="prompt">A college has 300 students, each taking 5 credit hours. If 15 credit hours equals 1 FTE, what's the college's FTE?</legend>
+      <label class="opt"><input type="radio" name="ciB" value="a"> 300</label>
+      <label class="opt"><input type="radio" name="ciB" value="b" data-correct> 100</label>
+      <label class="opt"><input type="radio" name="ciB" value="c"> 1,500</label>
+      <label class="opt"><input type="radio" name="ciB" value="d"> 20</label>
+    </fieldset>
+    <div class="actions"><button class="btn" data-check>Check answer</button></div>
+    <div class="fb good"><strong>Right.</strong>300 students × 5 credits = 1,500 credit hours. 1,500 ÷ 15 = 100 FTE. A headcount of 300, but the funding equivalent of 100 full-time students.</div>
+    <div class="fb bad"><strong>Not quite.</strong>Total the credit hours first (300 × 5 = 1,500), then divide by 15. That gives 100 FTE.</div>
+  </div>
+
+  <div class="why">
+    <strong>Why this matters in your job</strong>
+    Scheduling authority is usually spread across several offices, and the person you're talking to may own only one piece of it. Knowing who owns, influences, and carries out scheduling decisions helps you understand a client's organization and why a change can take so many conversations.
+  </div>
+</section>
+
+<!-- ================= BLOCK C ================= -->
+<section data-step="c" data-title="Block C" data-zoom="system">
+  <p class="meta">Block C · About 15 minutes</p>
+  <h2>Institution types and funding models</h2>
+  <p class="lede">Zooming out again: a campus isn't always a standalone place, and what pays for it shapes what it prioritizes.</p>
+
+  <h3>Common institution types</h3>
+  <div class="types">
+    <div><b>Public four-year universities</b>Includes large research universities (often a state's flagship) and regional universities focused on teaching and serving their area. Partly funded by the state.</div>
+    <div><b>Community colleges</b>Public two-year colleges with open admission. They offer associate degrees, certificates, workforce training, and a starting point for transfer to a four-year school.</div>
+    <div><b>Private nonprofit colleges</b>Everything from small liberal arts colleges to major research universities. Many depend heavily on tuition; some have large endowments.</div>
+    <div><b>For-profit institutions</b>Owned by companies and run as businesses, with revenue coming mostly from tuition.</div>
+    <div><b>Mission-defined institutions</b>Historically Black colleges and universities (HBCUs), tribal colleges, and Hispanic-serving institutions, among others. These can be public or private.</div>
+  </div>
+
+  <h3>Systems and districts</h3>
+  <p>If you went to one campus, you probably thought of it as a standalone school. Many aren't. A <span class="term">system</span> is a group of institutions under a shared governing board, like the State University of New York (SUNY) or the University System of Georgia. A <span class="term">district</span>, common for community colleges, is a group of colleges governed by one board, like Maricopa Community Colleges in Arizona.</p>
+  <p>Here's a hypothetical example of what that looks like in practice.</p>
+  <div class="panel">
+    <div class="system" aria-label="Example community college district structure">
+      <div class="top">Prairie Valley Community College District board and district office</div>
+      <p class="rules" style="margin:0">Sets a shared course catalog and academic calendar, approves new programs, sets the budget for each college</p>
+      <div class="row">
+        <div>North College</div>
+        <div class="you">Central College<br><small>where a student enrolls</small></div>
+        <div>South College</div>
+      </div>
+      <p class="rules" style="margin:0">Each college builds its own schedule, but only within the district's rules</p>
+    </div>
+  </div>
+  <p>A student at Central College sees one campus. Underneath, the courses Central can offer, the calendar it follows, and the budget it schedules against may all be set above it. How much authority sits at the system level versus the campus level varies a lot, which is exactly why it matters to know which kind of client you're working with.</p>
+
+  <p class="bridge" style="margin-top:34px">Now that we know what kind of institution we're talking about, here's what pays for it.</p>
+
+  <h3>Funding models</h3>
+  <div class="funding">
+    <div><b>Tuition-driven</b>Most revenue comes from tuition and fees. Common at private colleges.<p class="fq">Every empty seat and every student who leaves is lost revenue.</p></div>
+    <div><b>State appropriation</b>The state legislature allocates funding to public institutions, often based on enrollment or FTE.<p class="fq">Enrollment counts drive the budget.</p></div>
+    <div><b>Performance-based</b>A share of state funding is tied to outcomes like credits completed and degrees awarded.<p class="fq">Students finishing, not just enrolling, drives the budget.</p></div>
+  </div>
+  <p>Most institutions blend more than one. Performance-based funding is the least intuitive, so here's how it works.</p>
+  <div class="panel">
+    <p style="font-weight:600;margin-bottom:6px">Example: a hypothetical state funding formula</p>
+    <p>A state sets aside part of its higher ed budget and distributes it by results. Each public university earns points for:</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Outcome</th><th>Points</th></tr></thead>
+      <tbody>
+        <tr><td>Each student who completes 30 credits in their first year</td><td>1</td></tr>
+        <tr><td>Each bachelor's degree awarded</td><td>3</td></tr>
+        <tr><td>Bonus for each degree earned by a low-income student</td><td>+1</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:10px;margin-bottom:0">Each school's share of the money depends on its share of the points. A university that holds enrollment steady but graduates fewer students can lose funding to a school that graduates more. Several states use some version of this. Tennessee was an early example, tying most of its base funding for public institutions to outcomes.</p>
+  </div>
+
+  <div class="q" data-type="short" data-key="ciC">
+    <p class="qnum">Apply it</p>
+    <p class="prompt">If a state ties funding to on-time completion, what do you think the institution starts prioritizing?</p>
+    <textarea data-save="ciC" aria-label="Your answer"></textarea>
+    <div class="actions"><button class="btn" data-reveal>Compare with a sample answer</button><span class="note" data-hint></span></div>
+    <div class="fb sample"><strong>Sample answer</strong>Making sure students can get the courses they need when they need them: enough seats in required and gateway courses, schedules built around pathways rather than faculty preference alone, sections at times working students can attend, and advising that keeps students taking enough credits to stay on pace. In other words, degree velocity becomes a budget issue.</div>
+  </div>
+
+  <div class="why">
+    <strong>Why this matters in your job</strong>
+    Many registration frustrations trace back to funding and capacity limits, not carelessness. And it's why clients care so much about enrollment and completion numbers: depending on their funding model, those numbers are their budget.
+  </div>
+</section>
+
+<!-- ================= BLOCK D ================= -->
+<section data-step="d" data-title="Block D" data-zoom="industry">
+  <p class="meta">Block D · About 10 minutes</p>
+  <h2>Industry pressures: why this matters now</h2>
+  <p class="lede">Maya isn't a rare case. Zoom all the way out and her story is one data point in a pattern across higher education.</p>
+
+  <h3>Fewer students, and not enough finishing</h3>
+  <p><strong>Enrollment.</strong> College enrollment nationally declined through much of the 2010s and dropped sharply during the pandemic. It has partially rebounded since, but many institutions are competing for a smaller pool of students, and birth rates fell after the 2008 recession, which means fewer high school graduates in the years ahead.</p>
+  <p><strong>Completion.</strong> Many students who start college don't finish, and many who do take longer than the "normal" two or four years. Completion rates are commonly measured over 150% of normal time (six years for a bachelor's degree) for exactly that reason, and gaps persist across student groups.</p>
+
+  <h3>Registration is part of the problem</h3>
+  <div class="stats">
+    <div class="stat"><div class="num">78%</div><div class="lbl"><span class="todo">Add stat description and source from the existing asset</span></div></div>
+    <div class="stat"><div class="num">85%</div><div class="lbl"><span class="todo">Add stat description and source from the existing asset</span></div></div>
+    <div class="stat"><div class="num">72%</div><div class="lbl"><span class="todo">Add stat description and source from the existing asset</span></div></div>
+    <div class="stat"><div class="num">75%</div><div class="lbl"><span class="todo">Add stat description and source from the existing asset</span></div></div>
+  </div>
+
+  <h3>Where the data comes from</h3>
+  <div class="terms">
+    <div><b>IPEDS</b>The Integrated Postsecondary Education Data System, run by the U.S. Department of Education's National Center for Education Statistics. Every institution that participates in federal student aid reports enrollment, completion, and finance data to it.<span class="todo" style="margin-top:8px">Add specific IPEDS data point</span></div>
+    <div><b>CCRC</b>The Community College Research Center at Teachers College, Columbia University. Its research on student pathways and completion has shaped how many colleges think about program design and scheduling.<span class="todo" style="margin-top:8px">Add specific CCRC finding</span></div>
+  </div>
+
+  <div class="q">
+    <p class="qnum">Look back</p>
+    <p class="prompt">Revisit the registration snag you described at the start of this unit. Which zoom level explains it best: student, campus, system, or industry? Why?</p>
+    <textarea data-save="ciD" aria-label="Your reflection"></textarea>
+    <p class="saved" id="openingEcho"></p>
+  </div>
+
+  <div class="why">
+    <strong>Why this matters in your job</strong>
+    The registration friction you described at the start isn't isolated bad luck. It's a symptom of an industry-wide enrollment and completion problem, and that's the reason Ad Astra exists. We've gone from one student's experience all the way to the industry-wide picture; that's the landscape Ad Astra operates in. Unit 1 shows why it's a crisis. Unit 3 shows what Ad Astra does about it.
+  </div>
+</section>
+
+<!-- ================= KNOWLEDGE CHECK ================= -->
+<section data-step="kc" data-title="Knowledge check" data-zoom="all">
+  <p class="meta">Knowledge check · 8 questions</p>
+  <h2>Knowledge check</h2>
+  <p class="lede">Check your answers as you go. Questions 1 through 4 and 7 are scored; the written questions let you compare your answer with a sample.</p>
+
+  <div class="q" data-type="multi" data-key="kc1" data-scored>
+    <p class="qnum">Question 1</p>
+    <fieldset>
+      <legend class="prompt">Which institutional areas may influence or participate in academic scheduling? Select all that apply.</legend>
+      <label class="opt"><input type="checkbox" value="aa" data-correct> Academic Affairs</label>
+      <label class="opt"><input type="checkbox" value="reg" data-correct> Registrar</label>
+      <label class="opt"><input type="checkbox" value="em" data-correct> Enrollment Management</label>
+      <label class="opt"><input type="checkbox" value="fin" data-correct> Finance</label>
+      <label class="opt"><input type="checkbox" value="it" data-correct> IT</label>
+      <label class="opt"><input type="checkbox" value="so" data-correct> Scheduling Office</label>
+      <label class="opt"><input type="checkbox" value="sa" data-correct> Student Affairs</label>
+    </fieldset>
+    <div class="actions"><button class="btn" data-check>Check answer</button></div>
+    <div class="fb good"><strong>Correct, all seven.</strong>Each can shape scheduling, from deciding what's offered (Academic Affairs) to funding it (Finance) to running the system it lives in (IT). How much influence each has varies by institution.</div>
+    <div class="fb bad"><strong>Not quite.</strong>All seven can play a role. Academic Affairs decides what's offered, Finance funds it, Scheduling assigns rooms, the Registrar runs registration, IT runs the SIS, Enrollment Management forecasts demand, and Student Affairs sees the student impact.</div>
+  </div>
+
+  <div class="q" data-type="match" data-key="kc2" data-scored>
+    <p class="qnum">Question 2</p>
+    <p class="prompt">Match each definition with the correct term.</p>
+    <div class="match-row" data-answer="section"><span>A specific scheduled offering of a course, with its own time, room, instructor, and seat cap</span><select aria-label="Term for: a specific scheduled offering"></select></div>
+    <div class="match-row" data-answer="fte"><span>A count that converts total credit hours into an equivalent number of full-time students</span><select aria-label="Term for: converts credit hours to full-time students"></select></div>
+    <div class="match-row" data-answer="course"><span>A subject listed in the catalog, like BUS 210 Principles of Marketing</span><select aria-label="Term for: a subject listed in the catalog"></select></div>
+    <div class="match-row" data-answer="completion"><span>A student earning the degree or credential they set out to earn</span><select aria-label="Term for: earning the credential"></select></div>
+    <div class="match-row" data-answer="program"><span>The complete set of requirements a student must finish to earn a credential</span><select aria-label="Term for: complete set of requirements"></select></div>
+    <div class="match-row" data-answer="retention"><span>Whether students continue enrolling from one term or year to the next</span><select aria-label="Term for: continuing to enroll"></select></div>
+    <div class="actions"><button class="btn" data-check>Check answers</button></div>
+    <div class="fb good"><strong>All six matched.</strong>You've got the core vocabulary down.</div>
+    <div class="fb bad"><strong>Some matches are off.</strong>The ones outlined in red need another look. If course and section are the mix-up, remember: the course is the catalog listing, the section is the specific time and room you register for.</div>
+  </div>
+
+  <div class="q" data-type="single" data-key="kc3" data-scored>
+    <p class="qnum">Question 3</p>
+    <fieldset>
+      <legend class="prompt">Which statement best describes ownership of academic scheduling?</legend>
+      <label class="opt"><input type="radio" name="kc3" value="a"> The Registrar always owns it.</label>
+      <label class="opt"><input type="radio" name="kc3" value="b"> Academic Affairs always owns it.</label>
+      <label class="opt"><input type="radio" name="kc3" value="c" data-correct> Ownership varies and may be centralized, decentralized, or hybrid.</label>
+      <label class="opt"><input type="radio" name="kc3" value="d"> IT owns scheduling because it manages the systems.</label>
+    </fieldset>
+    <div class="actions"><button class="btn" data-check>Check answer</button></div>
+    <div class="fb good"><strong>Correct.</strong>There's no universal owner. It depends on the institution's model.</div>
+    <div class="fb bad"><strong>Not quite.</strong>No single office always owns scheduling. Institutions use centralized, decentralized, or hybrid models, and IT runs the system without owning the decisions.</div>
+  </div>
+
+  <div class="q" data-type="single" data-key="kc4" data-scored>
+    <p class="qnum">Question 4</p>
+    <fieldset>
+      <legend class="prompt">State University has one main campus and four regional campuses, all governed by a single central board. A regional campus wants to add a new evening section but has to get approval from that central board first. What does this best illustrate?</legend>
+      <label class="opt"><input type="radio" name="kc4" value="a"> The regional campus has full independent authority over its own scheduling.</label>
+      <label class="opt"><input type="radio" name="kc4" value="b" data-correct> Being part of a system or district means scheduling decisions may need to align with authority above the individual campus.</label>
+      <label class="opt"><input type="radio" name="kc4" value="c"> Systems and districts are purely administrative and don't affect scheduling.</label>
+      <label class="opt"><input type="radio" name="kc4" value="d"> Only the main campus in a system can make scheduling decisions.</label>
+    </fieldset>
+    <div class="actions"><button class="btn" data-check>Check answer</button></div>
+    <div class="fb good"><strong>Correct.</strong>The campus can't act alone because authority sits above it at the system level.</div>
+    <div class="fb bad"><strong>Not quite.</strong>The regional campus needed board approval, so its authority is limited by the system it belongs to. That's the defining feature of a system or district.</div>
+  </div>
+
+  <div class="q" data-type="short" data-key="kc5">
+    <p class="qnum">Question 5</p>
+    <p class="prompt">A student needs a required course to stay on their pathway, but every available section is full. The academic department determines how many sections of the course to offer, while a central scheduling office assigns rooms and manages the schedule. Using terminology from this unit, identify the institution's scheduling model and describe one factor that could be affecting the student's ability to stay on track.</p>
+    <textarea data-save="kc5" aria-label="Your answer to question 5"></textarea>
+    <div class="actions"><button class="btn" data-reveal>Compare with a sample answer</button><span class="note" data-hint></span></div>
+    <div class="fb sample"><strong>Sample answer</strong>This is a hybrid model: the department controls how many sections are offered, and a central office controls rooms and times. One factor: the department may not have offered enough sections to meet demand, so every section hit its seat capacity. Others could be no rooms available at times the student can attend, or no budget for another instructor. Any of these slows the student's degree velocity and puts retention and completion at risk.</div>
+  </div>
+
+  <div class="q" data-type="short" data-key="kc6">
+    <p class="qnum">Question 6</p>
+    <p class="prompt">Why do enrollment, retention, and completion matter financially and strategically to colleges and universities?</p>
+    <textarea data-save="kc6" aria-label="Your answer to question 6"></textarea>
+    <div class="actions"><button class="btn" data-reveal>Compare with a sample answer</button><span class="note" data-hint></span></div>
+    <div class="fb sample"><strong>Sample answer</strong>Enrollment drives revenue, whether through tuition or state funding based on FTE. Retention keeps that revenue coming, since replacing a student who leaves is costly. Completion increasingly drives funding directly through performance-based models, and it shapes reputation, rankings, and accountability to the state and accreditors. Strategically, all three show whether the institution is fulfilling its mission.</div>
+  </div>
+
+  <div class="q" data-type="single" data-key="kc7" data-scored>
+    <p class="qnum">Question 7</p>
+    <fieldset>
+      <legend class="prompt">Which of the following reflects the enrollment and completion pressures facing higher education today?</legend>
+      <label class="opt"><input type="radio" name="kc7" value="a"> Institutions are struggling to keep up with rapidly growing enrollment.</label>
+      <label class="opt"><input type="radio" name="kc7" value="b" data-correct> Declining enrollment and gaps in on-time completion are widespread industry challenges.</label>
+      <label class="opt"><input type="radio" name="kc7" value="c"> Completion rates have improved to the point that they're no longer a strategic concern.</label>
+      <label class="opt"><input type="radio" name="kc7" value="d"> Enrollment pressures are isolated to a small number of institutions.</label>
+    </fieldset>
+    <div class="actions"><button class="btn" data-check>Check answer</button></div>
+    <div class="fb good"><strong>Correct.</strong>These pressures are industry-wide, not isolated.</div>
+    <div class="fb bad"><strong>Not quite.</strong>The pattern across higher education is declining enrollment and gaps in on-time completion, affecting institutions broadly.</div>
+  </div>
+
+  <div class="q" data-type="short" data-key="kc8">
+    <p class="qnum">Question 8</p>
+    <p class="prompt">Choose one funding model (tuition-driven, state appropriation, or performance-based) and explain how it would shape an institution's priorities around enrollment or completion.</p>
+    <textarea data-save="kc8" aria-label="Your answer to question 8"></textarea>
+    <div class="actions"><button class="btn" data-reveal>Compare with a sample answer</button><span class="note" data-hint></span></div>
+    <div class="fb sample"><strong>Sample answers</strong>Tuition-driven: every enrolled and retained student is revenue, so the institution focuses on recruiting and keeping students and filling seats. State appropriation: if funding follows enrollment or FTE, growing and holding enrollment protects the budget. Performance-based: funding follows outcomes, so the institution prioritizes on-time completion, like guaranteeing seats in required courses and keeping students on pace.</div>
+  </div>
+
+  <div class="actions" style="margin-top:24px"><button class="btn" id="scoreBtn">See my score</button></div>
+  <div class="scorecard" id="scorecard" aria-live="polite"></div>
+</section>
+
+<!-- ================= WRAP-UP ================= -->
+<section data-step="wrap" data-title="Wrap-up" data-zoom="all">
+  <p class="meta">Wrap-up</p>
+  <h2>From one student to the whole industry</h2>
+  <p class="lede">You started with a single registration snag. Here's everything that was sitting underneath it.</p>
+  <div class="arc">
+    <div><b>Student</b><small>A full section slows degree velocity, which threatens retention and completion.</small></div>
+    <div><b>Campus</b><small>Scheduling authority is shared across many offices and models.</small></div>
+    <div><b>System</b><small>Systems, districts, and funding models set the rules and the budget.</small></div>
+    <div><b>Industry</b><small>Enrollment and completion pressures make every seat matter.</small></div>
+  </div>
+  <p>That's the landscape Ad Astra operates in, and the vocabulary you'll use in every client conversation.</p>
+  <div class="panel">
+    <p style="margin:0 0 4px;font-weight:600">Up next: Unit 2, Understanding the Academic Calendar</p>
+    <p style="margin:0">How the academic year is structured, and the planning cycle that decides when schedules get built.</p>
+  </div>
+</section>
+
+<nav class="pager" aria-label="Section navigation">
+  <button class="btn ghost" id="prevBtn">Previous</button>
+  <button class="btn" id="nextBtn">Next</button>
+</nav>
+
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  var PREFIX = "aa101-u1-";
+  function load(k){ try { return localStorage.getItem(PREFIX + k); } catch(e){ return null; } }
+  function save(k,v){ try { localStorage.setItem(PREFIX + k, v); } catch(e){} }
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-step]"));
+  var nav = document.getElementById("nav");
+  var visited = {};
+  try { visited = JSON.parse(load("visited") || "{}") || {}; } catch(e){ visited = {}; }
+
+  var zoomOrder = ["student","campus","system","industry"];
+  var zoomText = {
+    all: "The full picture, from student to industry",
+    student: "Zoom level: one student",
+    campus: "Zoom level: a single campus",
+    system: "Zoom level: the system and its funding",
+    industry: "Zoom level: higher education as a whole"
+  };
+
+  sections.forEach(function(s, i){
+    var li = document.createElement("li");
+    var b = document.createElement("button");
+    b.type = "button";
+    b.innerHTML = '<span class="tick" aria-hidden="true"></span><span>' + s.dataset.title + '</span>';
+    b.addEventListener("click", function(){ show(i, true); });
+    li.appendChild(b);
+    nav.appendChild(li);
+  });
+  var navButtons = nav.querySelectorAll("button");
+
+  var current = 0;
+  function show(i, focus){
+    current = Math.max(0, Math.min(sections.length - 1, i));
+    sections.forEach(function(s, j){ s.classList.toggle("active", j === current); });
+    navButtons.forEach(function(b, j){
+      if (j === current) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current");
+    });
+    var key = sections[current].dataset.step;
+    visited[key] = true;
+    save("visited", JSON.stringify(visited));
+    save("current", String(current));
+    updateProgress();
+    updateZoom(sections[current].dataset.zoom);
+    document.getElementById("prevBtn").style.visibility = current === 0 ? "hidden" : "visible";
+    var next = document.getElementById("nextBtn");
+    if (current === sections.length - 1){ next.style.visibility = "hidden"; }
+    else { next.style.visibility = "visible"; next.textContent = "Continue to " + sections[current + 1].dataset.title; }
+    if (key === "d") echoOpening();
+    if (focus){
+      window.scrollTo(0,0);
+      var h = sections[current].querySelector("h1,h2");
+      if (h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+      if (navButtons[current].scrollIntoView && window.innerWidth <= 920){
+        navButtons[current].scrollIntoView({block:"nearest", inline:"center"});
+      }
+    }
+  }
+  function updateProgress(){
+    var n = sections.filter(function(s){ return visited[s.dataset.step]; }).length;
+    document.getElementById("progressText").textContent = n + " of " + sections.length + " sections visited";
+    document.getElementById("progressBar").style.width = (n / sections.length * 100) + "%";
+    navButtons.forEach(function(b, j){
+      b.querySelector(".tick").textContent = visited[sections[j].dataset.step] ? "\u2713" : "";
+    });
+  }
+  function updateZoom(z){
+    var idx = zoomOrder.indexOf(z);
+    document.querySelectorAll(".zoom .lvl").forEach(function(g){
+      var gi = zoomOrder.indexOf(g.dataset.lvl);
+      g.classList.toggle("on", z === "all" ? false : gi === idx);
+      g.classList.toggle("seen", z === "all" ? true : gi < idx);
+    });
+    document.getElementById("zoomCaption").textContent = zoomText[z] || "";
+  }
+  document.getElementById("prevBtn").addEventListener("click", function(){ show(current - 1, true); });
+  document.getElementById("nextBtn").addEventListener("click", function(){ show(current + 1, true); });
+
+  // Saved text areas
+  document.querySelectorAll("textarea[data-save]").forEach(function(t){
+    var v = load("t-" + t.dataset.save);
+    if (v) t.value = v;
+    t.addEventListener("input", function(){ save("t-" + t.dataset.save, t.value); });
+  });
+
+  function echoOpening(){
+    var parts = ["open2","open1","open3"].map(function(k){ return (load("t-" + k) || "").trim(); }).filter(Boolean);
+    var el = document.getElementById("openingEcho");
+    el.textContent = parts.length ? "What you wrote at the start: \u201C" + parts[0].slice(0, 220) + (parts[0].length > 220 ? "\u2026" : "") + "\u201D" : "";
+  }
+
+  // Tabs
+  var tabs = document.querySelectorAll('[role="tab"]');
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      tabs.forEach(function(o){
+        var on = o === t;
+        o.setAttribute("aria-selected", on ? "true" : "false");
+        var p = document.getElementById(o.getAttribute("aria-controls"));
+        p.classList.toggle("on", on);
+        p.hidden = !on;
+      });
+    });
+  });
+
+  // Blockers
+  document.querySelectorAll(".blocker").forEach(function(b){
+    b.addEventListener("click", function(){
+      b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") === "true" ? "false" : "true");
+    });
+  });
+
+  // Matching selects
+  var matchTerms = [["course","Course"],["section","Section"],["program","Program of study"],["fte","FTE"],["retention","Retention"],["completion","Completion"]];
+  document.querySelectorAll(".match-row select").forEach(function(sel){
+    var o = document.createElement("option"); o.value = ""; o.textContent = "Choose a term"; sel.appendChild(o);
+    matchTerms.forEach(function(m){ var op = document.createElement("option"); op.value = m[0]; op.textContent = m[1]; sel.appendChild(op); });
+  });
+
+  // Scoring
+  var results = {};
+  try { results = JSON.parse(load("results") || "{}") || {}; } catch(e){ results = {}; }
+
+  function setFeedback(q, ok){
+    q.querySelector(".fb.good").classList.toggle("show", ok);
+    q.querySelector(".fb.bad").classList.toggle("show", !ok);
+  }
+
+  document.querySelectorAll("[data-check]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var q = btn.closest(".q");
+      var type = q.dataset.type;
+      var ok = false;
+      if (type === "single"){
+        var picked = q.querySelector("input:checked");
+        if (!picked){ flash(btn, "Choose an answer first."); return; }
+        q.querySelectorAll(".opt").forEach(function(l){ l.classList.remove("right","wrong"); });
+        ok = picked.hasAttribute("data-correct");
+        picked.closest(".opt").classList.add(ok ? "right" : "wrong");
+        if (!ok) q.querySelector("input[data-correct]").closest(".opt").classList.add("right");
+      } else if (type === "multi"){
+        var any = q.querySelector("input:checked");
+        if (!any){ flash(btn, "Select at least one option."); return; }
+        ok = true;
+        q.querySelectorAll(".opt").forEach(function(l){
+          var inp = l.querySelector("input");
+          var should = inp.hasAttribute("data-correct");
+          l.classList.remove("right","wrong");
+          if (should) l.classList.add("right");
+          if (inp.checked !== should){ ok = false; if (inp.checked) l.classList.add("wrong"); }
+        });
+      } else if (type === "match"){
+        var rows = q.querySelectorAll(".match-row");
+        var blank = Array.prototype.some.call(rows, function(r){ return !r.querySelector("select").value; });
+        if (blank){ flash(btn, "Match every definition first."); return; }
+        ok = true;
+        rows.forEach(function(r){
+          var good = r.querySelector("select").value === r.dataset.answer;
+          r.classList.toggle("right", good); r.classList.toggle("wrong", !good);
+          if (!good) ok = false;
+        });
+      }
+      setFeedback(q, ok);
+      if (q.hasAttribute("data-scored")){ results[q.dataset.key] = ok; save("results", JSON.stringify(results)); }
+    });
+  });
+
+  document.querySelectorAll("[data-reveal]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var q = btn.closest(".q");
+      var t = q.querySelector("textarea");
+      var hint = q.querySelector("[data-hint]");
+      if (t.value.trim().length < 15){ hint.textContent = "Write your own answer first, then compare."; t.focus(); return; }
+      hint.textContent = "";
+      q.querySelector(".fb.sample").classList.add("show");
+    });
+  });
+
+  function flash(btn, msg){
+    var q = btn.closest(".q");
+    var n = q.querySelector(".flash");
+    if (!n){ n = document.createElement("span"); n.className = "note flash"; btn.parentNode.appendChild(n); }
+    n.textContent = msg;
+    setTimeout(function(){ n.textContent = ""; }, 2600);
+  }
+
+  document.getElementById("scoreBtn").addEventListener("click", function(){
+    var scored = document.querySelectorAll('section[data-step="kc"] .q[data-scored]');
+    var answered = 0, correct = 0;
+    scored.forEach(function(q){
+      if (q.dataset.key in results){ answered++; if (results[q.dataset.key]) correct++; }
+    });
+    var card = document.getElementById("scorecard");
+    var written = ["kc5","kc6","kc8"].filter(function(k){ return (load("t-" + k) || "").trim().length >= 15; }).length;
+    if (answered < scored.length){
+      card.innerHTML = '<p style="margin:0">Check your answers on all ' + scored.length + ' scored questions first. You\u2019ve checked ' + answered + ' so far.</p>';
+    } else {
+      card.innerHTML = '<div class="big">' + correct + ' of ' + scored.length + ' correct</div>' +
+        '<p style="margin:6px 0 0">Written responses completed: ' + written + ' of 3. ' +
+        (correct === scored.length ? 'Nice work. You\u2019re ready for Unit 2.' : 'Review the questions marked in red, then try them again.') + '</p>';
+    }
+    card.classList.add("show");
+  });
+
+  var start = parseInt(load("current") || "0", 10);
+  show(isNaN(start) ? 0 : start, false);
+})();
+</script>
+</body>
+</html>
